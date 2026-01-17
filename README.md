@@ -21,7 +21,34 @@ A Flask-based inventory management system designed for efficiently tracking prod
 *   **Frontend**: HTML5, CSS3, JavaScript
 *   **Extensions**: Flask-Cors, Flask-Migrate
 
-## 📦 Installation
+## � Project Structure
+
+```text
+springboard_proj/
+├── routes/                 # API Route Handlers
+│   ├── auth_routes.py      # Login, Register, Logout
+│   ├── product_routes.py   # Product Management
+│   ├── transaction_routes.py # Stock In/Out & Alerts
+│   └── report_routes.py    # Logs & History
+├── static/                 # Frontend Assets
+│   ├── css/style.css
+│   └── js/script.js
+├── templates/              # HTML Templates
+│   └── index.html
+├── utils/                  # Utilities
+│   └── email_sender.py     # Email Helper Function
+├── instance/               # Database Storage (inventory.db)
+├── app.py                  # Main Application Entry Point
+├── config.py               # Configuration (Keys, DB URL)
+├── models.py               # Database Models (User, Product, etc.)
+├── check_users.py          # Utility: List all users
+├── reset_db.py             # Utility: Reset DB & Create Admin
+├── update_email.py         # Utility: Update Admin Email
+├── requirements.txt        # Python Dependencies
+└── README.md               # Project Documentation
+```
+
+## �📦 Installation
 
 1.  **Clone the repository** or download the source code.
 2.  **Install dependencies**:
@@ -76,7 +103,32 @@ For any subsequent users who register:
 4.  Click **Approve** to grant them access or **Reject** to delete the request.
     *   *Note: Only 'Approved' users can validly log in.*
 
-## 📋 API Endpoints
+## � Email Alerts
+
+The system automatically sends email notifications for critical events.
+
+### 1. Triggers
+*   **Low Stock Warning**: An email is sent immediately when a product's stock falls **below the minimum threshold** (default: 10) during a transaction.
+
+### 2. Who receives these emails?
+*   **Recipients**: All users with the **Admin** role will receive alerts to their registered email address.
+
+### 3. How to change the Recipient?
+To change who receives the alerts, you must update the email address of the Admin account.
+*   **Method 1 (Script)**: Open `update_email.py`, edit the email address in `admin.email = 'new@email.com'`, and run:
+    ```bash
+    python update_email.py
+    ```
+*   **Method 2 (New Admin)**: Simply register a new user, approve them as an Admin, and they will also start receiving alerts.
+
+### 4. Configuration (Sender)
+The *sender* email (the bot/system email) is configured in the `.env` file:
+```env
+MAIL_USERNAME=your-bot-email@gmail.com
+MAIL_PASSWORD=your-app-password
+```
+
+## �📋 API Endpoints
 
 *   **Auth**: `/api/auth/login`, `/api/auth/register`
 *   **Products**: `/api/products` (GET, POST, PUT, DELETE)
